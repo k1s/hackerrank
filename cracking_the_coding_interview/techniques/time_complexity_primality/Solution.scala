@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.techniques.time_complexity_primality
+
 object Solution {
 
   import io.StdIn._

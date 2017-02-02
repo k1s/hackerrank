@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.data_structures.arrays_left_rotation
+
 object Solution {
 
   def main(args: Array[String]): Unit = {

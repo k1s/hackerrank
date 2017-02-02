@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.techniques.bit_manipulation_lonely_integer
+
 object Solution {
 
   import io.StdIn._

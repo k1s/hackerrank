@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.data_structures.stacks_balanced_brackets
+
 object Solution {
 
   import io.StdIn._

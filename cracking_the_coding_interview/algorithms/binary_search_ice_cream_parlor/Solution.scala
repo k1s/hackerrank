@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.algorithms.binary_search_ice_cream_parlor
+
 object Solution {
 
   import io.StdIn._

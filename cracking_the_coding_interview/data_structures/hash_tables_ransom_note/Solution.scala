@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.data_structures.hash_tables_ransom_note
+
 object Solution {
 
   import io.StdIn._

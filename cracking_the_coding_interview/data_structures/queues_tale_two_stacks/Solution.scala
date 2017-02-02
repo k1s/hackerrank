@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.data_structures.queues_tale_two_stacks
+
 object Solution {
 
   import io.StdIn._

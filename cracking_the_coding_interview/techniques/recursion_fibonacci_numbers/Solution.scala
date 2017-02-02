@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.techniques.recursion_fibonacci_numbers
+
 object Solution {
 
   import io.StdIn._

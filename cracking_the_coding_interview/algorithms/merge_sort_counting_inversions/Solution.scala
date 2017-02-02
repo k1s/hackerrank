@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.algorithms.merge_sort_counting_inversions
+
 object Solution {
 
   import scala.io.StdIn._

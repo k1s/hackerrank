@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.data_structures.strings_making_anagrams
+
 object Solution {
 
   import io.StdIn._

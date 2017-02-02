@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.algorithms.sorting_bubble_sort
+
 object Solution {
 
   def main(args: Array[String]): Unit = {

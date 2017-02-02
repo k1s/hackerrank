@@ -1,3 +1,5 @@
+package cracking_the_coding_interview.techniques.recursion_davis_staircase
+
 object Solution {
 
   import scala.io.StdIn._
