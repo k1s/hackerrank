@@ -15,7 +15,7 @@ object Solution {
       }
 
       def merge() = {
-        while(low.nonEmpty && high.nonEmpty && low.max > high.max) {
+        while(low.nonEmpty && high.nonEmpty && low.head > high.head) {
           val lowHead= low.dequeue()
           val highHead = high.dequeue()
           low.enqueue(highHead)
@@ -23,7 +23,7 @@ object Solution {
         }
       }
 
-      def median() = if (low.size == high.size) (low.max + high.max) / 2.0 else low.max.asInstanceOf[Double]
+      def median() = if (low.size == high.size) (low.head + high.head) / 2.0 else low.head.asInstanceOf[Double]
 
     }
 
