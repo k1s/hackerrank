@@ -6,93 +6,87 @@ object Solution {
   import scala.language.postfixOps
 
   sealed abstract class Trie {
-    def isEmpty: Boolean
-    def +(key: List[Char]): Trie
-    def keys: List[String]
-    def keysStarts(prefix: List[Char]): List[String]
-  }
-  case object Empty extends Trie {
 
-    override def isEmpty: Boolean = true
+    def +(key: List[Char]): Trie
+
+    def countStartWith(prefix: List[Char]): Int
+
+    def apply(prefix: List[Char]): Int = countStartWith(prefix)
+
+  }
+
+  case object Empty extends Trie {
 
     override def +(key: List[Char]): Trie = key match {
       case Nil => Empty
-      case List(x) => Node(x, Empty, Empty, Empty)
-      case h::t => Node(h, Empty, Empty + t, Empty)
+      case List(x) => Node(x, true, Empty, Empty, Empty)
+      case h :: t => Node(h, false, Empty, Empty + t, Empty)
     }
 
-    override def toString: String = ""
-
-    override def keys: List[String] = List()
-
-    override def keysStarts(prefix: List[Char]): List[String] = List()
+    override def countStartWith(prefix: List[Char]): Int = 0
 
   }
 
-  case class Node[+A](char: Char, left: Trie, mid: Trie, right: Trie) extends Trie {
+  case class Node(char: Char, isEnd: Boolean, left: Trie, mid: Trie, right: Trie) extends Trie {
 
-    override def isEmpty: Boolean = false
-
-    override def +[B >: A](key: String, value: B): Trie[B] = key.length match {
-      case 0 => this
-      case _ =>
-        if (key.head < this.char) this.copy(left = this.left + (key, value))
-        else if (key.head > this.char) this.copy(right = this.right + (key, value))
-        else if (key.length == 1) this.copy(value = Some(value))
-        else this.copy(mid = this.mid + (key.tail, value))
+    override def +(key: List[Char]): Trie = key match {
+      case Nil => this
+      case h :: t if h < this.char => this.copy(left = this.left + key)
+      case h :: t if h > this.char => this.copy(right = this.right + key)
+      case h :: Nil => this.copy(isEnd = true)
+      case h :: t => this.copy(mid = this.mid + t)
     }
 
-    override def adj: List[Trie[A]] = List(this.left, this.mid, this.right)
-
-    override def toString: String = this.char + " " + this.value + " "
-
-    override def size: Int = 1 + this.left.size + this.mid.size + this.right.size
-
-    override def keys: List[String] = collect(this, "", List())
-
-    override def keysStarts(prefix: String): List[String] = getNode(this, prefix) match {
-      case None => List()
-      case Some(Node(c, v, l, m, r)) => v match {
-        case None => collect(m, prefix, List())
-        case Some(x) => collect(m, prefix, List(prefix))
-      }
+    override def countStartWith(prefix: List[Char]): Int = getNode(this, prefix) match {
+      case Node(c, end, l, m, r) =>
+        if (end)
+          collect(m, 1)
+        else
+          collect(m, 0)
+      case _ => 0
     }
 
-        private def collect[B >: A](trie: Trie[B], prefix: String, acc: List[String]): List[String] = trie match {
+    private def collect(trie: Trie, acc: Int): Int = trie match {
       case Empty => acc
-      case Node(c, v, l, m, r) =>
-        def sides = collect(l, prefix, acc) ++ collect(r, prefix, acc)
-        if (v.nonEmpty) sides ++ collect(m, prefix :+ c, (prefix :+ c) :: acc) distinct
-        else sides ++ collect(m, prefix :+ c, acc) distinct
+      case Node(c, end, l, m, r) =>
+        def sides = collect(l, 0) + collect(r, 0)
+        if (end)
+          sides + collect(m, acc + 1)
+        else
+          sides + collect(m, acc)
     }
 
-    private def getNode[B](trie: Trie[B], key: String): Option[Node[B]] = trie match {
-      case Empty => None
-      case Node(c, v, l, m, r) =>
-        if (key.length == 0) None
-        else if (key.head < c) getNode(l, key)
-        else if (key.head > c) getNode(r, key)
-        else if (key.length == 1) Some(Node(c, v, l, m, r))
-        else getNode(m, key.tail)
+    @scala.annotation.tailrec
+    private def getNode(trie: Trie, key: List[Char]): Trie = (trie, key) match {
+      case (Empty, _) => Empty
+      case (_, Nil) => Empty
+      case (Node(c, v, l, m, r), h :: t) if h < c => getNode(l, key)
+      case (Node(c, v, l, m, r), h :: t) if h > c => getNode(r, key)
+      case (x, h :: Nil) => x
+      case (Node(c, v, l, m, r), h :: t) => getNode(m, t)
     }
 
   }
 
   import scala.io.StdIn._
 
-  def split() = readLine().split(" ").map(_.toInt)
+  def split() = readLine().split(" ")
 
-  def process(s: String) = ???
+  var trie: Trie = Empty
+
+  def process(s: Array[String]) = s match {
+    case Array("add", x) => trie = trie + x.toList
+    case Array("find", x) => println(trie(x.toList))
+  }
 
   def main(args: Array[String]): Unit = {
 
     val rows = readInt()
-    (0 until rows).foreach(row => process(readLine()))
+    (0 until rows).foreach(row => process(split()))
 
   }
 
-  //  val stdinString = "3\n4\n1 1 0 0\n0 1 1 0\n0 0 1 0\n"//1 0 0 0"
-  val stdinString = "4\n4\n1 1 0 0\n0 1 1 0\n0 0 1 0\n1 0 0 0"
+  val stdinString = "4\nadd hack\nadd hackerrank\nfind hac\nfind hak"
 
   System.setIn(new java.io.ByteArrayInputStream(stdinString.getBytes("UTF-8")))
   Solution.main(null)
