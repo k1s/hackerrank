@@ -1,6 +1,6 @@
 package cracking_the_coding_interview.data_structures.queues_tale_two_stacks
 
-object Solution {
+object Solution2 {
 
   import io.StdIn._
   import scala.collection.mutable
