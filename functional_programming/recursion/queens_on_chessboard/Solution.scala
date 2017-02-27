@@ -2,16 +2,13 @@ package src
 
 import scala.collection.immutable.Seq
 
-/**
-  * Current exercise
-  */
 object Solution {
 
   import scala.io.StdIn._
 
   def process(n: Int) = {
 
-    def isSafePosition(desk: Stream[Int], row: Int, column: Int) = {
+    def isSafePosition(desk: List[Int], row: Int, column: Int) = {
       def isSafe(queenRow: Int, queenColumn: Int): Boolean = {
         import Math.abs
         if (queenColumn == column || queenRow == row ||
@@ -24,18 +21,20 @@ object Solution {
           true
       }
 
-      desk.zipWithIndex.forall { case (queen, index) => isSafe(index, queen) }
+      desk.zipWithIndex.forall{case (queen, index) => isSafe(index, queen)}
     }
 
-    def iterate(n: Int, row: Int, desk: Stream[Int]): Stream[Stream[Int]] = {
-      if (row == 0)
-        Stream(desk)
-      else {
-        Stream.range(0, n).filter(isSafePosition(desk, row, _)).flatMap(x => iterate(n, row - 1, x +: desk))
-      }
+    def iterate(n: Int, row: Int, desk: List[Int]): Seq[Seq[Int]] = {
+      if (row == n)
+        Seq(desk)
+      else
+        for {
+          column <- 0 until n if isSafePosition(desk, row, column)
+          xs <- iterate(n, row + 1, desk :+ column)
+        } yield xs
     }
 
-    iterate(n, n, Stream()).size
+    iterate(n, 0, List()).size
   }
 
   def main(args: Array[String]): Unit = {
@@ -45,10 +44,5 @@ object Solution {
     println(process(n))
 
   }
-
-  val stdinString = "11\n"
-
-  System.setIn(new java.io.ByteArrayInputStream(stdinString.getBytes("UTF-8")))
-  Solution.main(null)
 
 }
