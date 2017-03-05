@@ -1,8 +1,5 @@
-package src
+package statistics.standard_deviation
 
-/**
-  * Current exercise
-  */
 object Solution {
 
   import scala.io.StdIn._
@@ -30,10 +27,5 @@ object Solution {
     printRound1(std(xs))
 
   }
-
-  val stdinString = "5\n10 40 30 50 20"
-
-  System.setIn(new java.io.ByteArrayInputStream(stdinString.getBytes("UTF-8")))
-  Solution.main(null)
 
 }
