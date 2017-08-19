@@ -16,3 +16,4 @@
 
 
 (printf "%.3f" (reduce + (map binomial (range 3 7))))
+ 
