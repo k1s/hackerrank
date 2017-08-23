@@ -20,22 +20,49 @@
     (recur (f acc (first xs)) f (rest xs))))
 
 (defn length [xs]
-  (fold-left 0
-             (fn [acc next] (+ acc 1))
-             xs))
+  (reduce (fn [acc next] (+ acc 1)) 0 xs))
 
 (length [])
 (length [4])
 (length [2 3 4])
 
-(defn filter-array-fl [delim xs]
-  (fold-left []
-             (fn [acc next] (if (< next delim) (conj acc next) acc))
-             xs))
-
 (defn filter-array-for [delim xs]
   (for [i xs :when (< i delim)] i))
 
-(filter-array-fl 4 [1 8 2 7 3 6 4 5])
+(defn filter-array [f xs]
+  (fold-left []
+             (fn [acc next] (if (f next) (conj acc next) acc))
+             xs))
+
 (filter-array-for 4 [1 8 2 7 3 6 4 5])
-(filter #(< % 4) [1 8 2 7 3 6 4 5])
+(filter-array #(< % 4) [1 8 2 7 3 6 4 5])
+
+(defn filter-odd [xs]
+  (map #(first %)
+       (filter #(odd? (second %))
+               (map vector xs (range 0 (count xs))))))
+
+(filter-odd [1 2 3 4 5 6 7 8 9])
+
+(defn reverse-r [xs]
+  (reduce conj [] xs))
+
+(reverse-r [1 2 3 4])
+
+(defn sum-odd-1 [xs]
+  (reduce (fn [acc next] (if (odd? next) (+ acc next) acc))
+          0
+          xs))
+
+(defn sum-odd-2 [xs]
+  (reduce + (filter odd? xs)))
+
+(sum-odd-1 [1 2 3 4 5])
+(sum-odd-2 [1 2 3 4 5])
+
+
+(defn absolute [xs]
+  (map #(Math/abs %) xs))
+
+(absolute [1 -1 2 -2 3 -3])
+
