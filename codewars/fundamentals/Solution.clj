@@ -25,8 +25,6 @@
 
 (disemvowel "This website is for losers LOL!")
 
-(set "abcdf")
-
 (defn pangram? [s]
   (let [alp (set "abcdefghijklmnopqrstuvwxyz")]
     (= alp
