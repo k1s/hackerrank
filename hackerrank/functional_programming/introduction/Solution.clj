@@ -1,4 +1,5 @@
-(ns hackerrank)
+(ns hackerrank
+  (:require [clojure.string :as str]))
 
 (defn list-replication [num xs]
   (mapcat (fn [x] (for [i (range num)] x))
@@ -62,7 +63,32 @@
 
 
 (defn absolute [xs]
-  (map #(Math/abs %) xs))
+  (map #(reduce * (range 1 (inc x))))(Math/abs %) xs))
 
 (absolute [1 -1 2 -2 3 -3])
+
+(defn exp [x]
+  (+ 1
+     (reduce + (map #(/
+                       (Math/pow x %)
+                       (reduce * (range 1 (inc %))))
+                     (range 1 10)))))
+
+(exp 20.0)
+
+(defn volume [x]
+  (def coeffs (map
+               read-string 
+               (str/split
+                 (read-line)
+                 " "))))
+
+
+
+
+
+
+
+
+
 
