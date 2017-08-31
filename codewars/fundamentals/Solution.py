@@ -13,8 +13,20 @@ def likes(names):
 
     return ans(names)
         
-print(likes([]))
-print(likes(['Peter']))
-print(likes(['Peter', 'Jacob']))
-print(likes(['Max', 'John', 'Mark']))
-print(likes(['Alex', 'Jacob', 'Mark', 'Max']))
+
+def isValidWalk(walk):
+    from collections import Counter
+    counter = Counter(walk)
+    return len(walk) == 10 and counter['n'] == counter['s'] and counter['e'] == counter['w']
+
+
+def find_nb(m):
+    n = 0
+    s = 0
+    while s < m:
+        s = n ** 3 + s
+        n = n + 1
+    if (s == m):
+        return n - 1
+    else:
+        return -1
