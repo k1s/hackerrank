@@ -30,3 +30,14 @@ def find_nb(m):
         return n - 1
     else:
         return -1
+
+
+def  to_weird_case(string):
+    def word(w):
+        return "".join([x.upper() if ind % 2 == 0 else x.lower() for ind, x in enumerate(w)])
+
+    return " ".join([word(w) for w in string.split()])
+
+
+print(to_weird_case('This is a test'))
+
