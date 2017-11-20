@@ -84,6 +84,16 @@
                  " "))))
 
 
+(defn repeated [f n]
+  (defn helper [f n acc]
+  (if (= n 0)
+    acc 
+    (recur f (- n 1) (f acc))))
+  #(helper f n %))
+
+((repeated #(* % %) 3) 2)
+
+
 
 
 

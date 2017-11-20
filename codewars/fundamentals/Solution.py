@@ -30,3 +30,10 @@ def find_nb(m):
         return n - 1
     else:
         return -1
+
+
+def filter_list(l):
+    return [x for x in l if isinstance(x, int)]
+
+
+print(filter_list([1,2,'a','b']))
