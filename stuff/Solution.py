@@ -12,13 +12,11 @@ def likes(names):
             return "{0}, {1} and {s} others like this".format(names[0], names[1], s = (len(names) - 2))
 
     return ans(names)
-        
 
 def isValidWalk(walk):
     from collections import Counter
     counter = Counter(walk)
     return len(walk) == 10 and counter['n'] == counter['s'] and counter['e'] == counter['w']
-
 
 def find_nb(m):
     n = 0
@@ -31,9 +29,17 @@ def find_nb(m):
     else:
         return -1
 
-
 def filter_list(l):
     return [x for x in l if isinstance(x, int)]
 
 
 print(filter_list([1,2,'a','b']))
+
+def  to_weird_case(string):
+    def word(w):
+        return "".join([x.upper() if ind % 2 == 0 else x.lower() for ind, x in enumerate(w)])
+
+    return " ".join([word(w) for w in string.split()])
+
+
+print(to_weird_case('This is a test'))
