@@ -43,3 +43,40 @@ def  to_weird_case(string):
 
 
 print(to_weird_case('This is a test'))
+
+
+def isPower(n, x):
+    num = n
+    while num >= x:
+        if (num % x != 0 or x == 1):
+            return False
+        if num == x:
+            return True
+        num = num / x
+    return False
+        
+    
+def digitsSum(n):
+    return sum(map(int, str(n)))
+
+greatNum = lambda n: n > 10 and isPower(n, digitsSum(n))
+
+def power_sumDigTerm(n):
+    nums = range(2, 99)
+    acc = set()
+    pq = [[pow(p, 2), p, 2] for p in nums]
+    
+    while len(acc) < n: 
+        smallest = pq[0]
+
+        if greatNum(smallest[0]):
+            acc.add(smallest[0])
+    
+        power = smallest[2]
+        new_base = smallest[1] + 1
+        new_value = pow(new_base, power)
+    
+        pq[0] = [new_value, new_base, power + 1]
+        pq.sort()
+        
+    return sorted(acc)[n - 1]

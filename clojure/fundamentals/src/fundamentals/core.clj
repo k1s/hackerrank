@@ -1,4 +1,5 @@
 (ns fundamentals.core
+  (:require [clojure.string :as str])
   (:gen-class))
 
 (defn -main
@@ -19,7 +20,6 @@
   (helper content (/ evap_per_day 100) thresh 0))
 
 (evaporator 10 10 10)
-
 
 (defn disemvowel [string]
   (let [vowels #{"a" "e" "i" "o" "u"}]
@@ -56,15 +56,10 @@
 (desc-order 123998)
 (desc-order 0)
 
-(defn digits-sum [x]
-  (->> (str x)
-       (to-digits)
-       (map-indexed (fn [idx next] (Math/pow next (inc idx))))
-       (reduce +)))
-
 (defn eureka [from to]
   (->> (range from to)
-       (filter #(== % (digits-sum %)))))
+       (filter #(== % (
+digits-sum %)))))
 
 (eureka 90 110)
 
@@ -79,14 +74,28 @@
 (digital-root 42)
 
 (defn compSame [a b]
-  (def left (frequencies (map #(* % %) a)))
-  (def right (frequencies b))
-  (every? #(= (get left %) (get right %))
-          a))
+  (defn is-join [a b]
+    (def left (frequencies (map #(* % %) a)))
+    (def right (frequencies b))
+    (= left right))
+  (if (nil? b)
+    false
+    (is-join a b)))
 
 (compSame [1 2 1 1 3] [1 1 1 4 9])
+(compSame [1 2 11 1 3 11] [1 1 4 121 121 9])
 
-(frequencies [1 2 1 1])
+(defn digits-sum [n acc]
+  (if (< n 10)
+    (+' acc n)
+    (digits-sum (quot n 10) (+' acc (mod n 10)))))
+
+
+
+
+
+
+
 
 
 
