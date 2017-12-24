@@ -1,6 +1,7 @@
 module Solution where
 
 import qualified Data.List.Split as Split
+import Data.List
 import Debug.Trace
 import qualified Data.Char as Char
 
@@ -54,6 +55,51 @@ firstUpper (h:t) = (Char.toUpper h):t
 toCamelCase :: String -> String
 toCamelCase s = concat $ first:(map firstUpper rest)
   where first:rest = Split.splitWhen (\x -> x == '_' || x == '-') $ s
+
+
+data Direction = North | South | East| West deriving (Eq, Ord, Show)
+
+equalDirection :: Direction -> Direction -> Bool
+equalDirection North South = True
+equalDirection South North = True
+equalDirection East West = True
+equalDirection West East = True
+equalDirection _ _ = False
+
+isReducted :: [Direction] -> Bool
+isReducted xs = all (\(x,y) -> not $ equalDirection x y) $ zip xs (tail xs)
+
+dirReduce :: [Direction] -> [Direction]
+dirReduce [] = []
+dirReduce [x] = [x]
+dirReduce ds @ (x:y:xs)
+  | isReducted ds        = ds
+  | x `equalDirection` y = dirReduce xs
+  | otherwise            = dirReduce (x: dirReduce (y: xs))
+
+
+reduceDirection :: Direction -> [Direction] -> [Direction]
+reduceDirection North (South:xs) = xs
+reduceDirection South (North:xs) = xs
+reduceDirection East (West:xs) = xs
+reduceDirection West (East:xs) = xs
+reduceDirection x xs = x:xs
+
+dirReduce1 :: [Direction] -> [Direction]
+dirReduce1 = foldr reduceDirection []
+
+
+charsSum :: [Char] -> Int
+charsSum = sum . map (Char.digitToInt)
+
+charsSumOrder :: [Char] -> [Char] -> Ordering
+charsSumOrder cs1 cs2
+    | charsSum cs1 < charsSum cs2 = LT
+    | charsSum cs1 > charsSum cs2 = GT
+    | otherwise = cs1 `compare` cs2
+
+orderWeight :: [Char] -> [Char]
+orderWeight xs = intercalate " " $ sortBy charsSumOrder $ filter (not . null) $ Split.splitOn " " xs
 
 
 
