@@ -102,4 +102,13 @@ orderWeight :: [Char] -> [Char]
 orderWeight xs = intercalate " " $ sortBy charsSumOrder $ filter (not . null) $ Split.splitOn " " xs
 
 
+sliding :: Int -> [a] -> [[a]]
+sliding n xs = map (take n) (filter (\x -> length x >= n) $ tails xs)
+
+maxSequence :: [Int] -> Int
+maxSequence [] = 0
+maxSequence xs = max 0 . maximum . map sum . concat . map (\x -> sliding x xs) $ [1..n]
+    where n = length xs
+
+
 
