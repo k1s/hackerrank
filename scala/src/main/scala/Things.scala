@@ -1,7 +1,6 @@
 object Things extends App {
 
   def missingInteger(a: Array[Int]): Int = {
-    // write your code in Scala 2.12
     val (min, max, doneSet) = a.foldLeft((1, 1, Set[Int]())) { case ((min, max, set), next) =>
       (Math.min(min, next), Math.max(max, next), set + next)
     }
@@ -14,6 +13,20 @@ object Things extends App {
       1
     else
       miss.get
+  }
+
+  def missingInteger2(a: Array[Int]): Int = {
+    val (min, max, doneSet) = a.foldLeft((1, 1, Set[Int]())) { case ((min, max, set), next) =>
+      (Math.min(min, next), Math.max(max, next), set + next)
+    }
+    val miss = (min to max).toSet.diff(doneSet)
+
+    if (miss.isEmpty)
+      max + 1
+    else if (miss.head <= 0)
+      1
+    else
+      miss.head
   }
 
 }
